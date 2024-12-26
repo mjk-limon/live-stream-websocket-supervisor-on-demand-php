@@ -1,0 +1,30 @@
+RewriteEngine On
+
+# Enable Cross-Origin Resource Sharing (CORS) headers
+Header always set Access-Control-Allow-Origin "*"
+Header always set Access-Control-Expose-Headers "Content-Length"
+
+# Cache-Control header
+Header always set Cache-Control "no-cache"
+
+# Handle OPTIONS preflight request (CORS)
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^ - [R=204,L]
+
+<FilesMatch "\.mpd$">
+    # MIME types for DASH content
+    AddType application/dash+xml .mpd
+</FilesMatch>
+
+<FilesMatch "\.mp4$">
+    AddType video/mp4 .mp4
+</FilesMatch>
+
+<FilesMatch "\.m3u8$">
+    # MIME types for HLS content
+    AddType application/vnd.apple.mpegurl .m3u8
+</FilesMatch>
+
+<FilesMatch "\.ts$">
+    AddType video/mp2t .ts
+</FilesMatch>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prothom Alo Live</title>
+
+    <link href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="./styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="content-wrapper">
+      <header class="text-center py-3">
+        <img
+          src="https://assets.prothomalo.com/prothomalo/assets/palo-bangla-bb996cdb70d2e0ccec8c.svg"
+          alt="Logo"
+          class="logo"
+        />
+      </header>
+
+      <div class="scrolling-text">
+        <marquee behavior="scroll" direction="left">
+          শুরু হলো নট স্যানশ
+        </marquee>
+      </div>
+
+      <div class="container-fluid mt-4">
+        <div class="row justify-content-between">
+          <div class="col-md-7">
+            <video-js id="vid1" class="video-js vjs-default-skin" controls>
+              <source
+                src="http://localhost/stream/dash/test.mpd"
+                type="application/dash+xml"
+              />
+              <source
+                src="https://go.muscatzonecleaningservices.com/stream/dash/test.mpd"
+                type="application/dash+xml"
+              />
+
+              <!-- Fallback HLS -->
+              <source
+                src="http://localhost/stream/hls/test.m3u8"
+                type="application/x-mpegURL"
+              />
+              <source
+                src="https://go.muscatzonecleaningservices.com/stream/hls/test.m3u8"
+                type="application/x-mpegURL"
+              />
+            </video-js>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-header">সরাসরি</div>
+              <div class="card-body">
+                <div id="chat-box" class="chat-box"></div>
+
+                <div id="login-section" class="mt-3">
+                  <input
+                    type="text"
+                    id="username"
+                    class="form-control"
+                    placeholder="আপনার আইডি দিন"
+                  />
+                  <button
+                    id="login-button"
+                    class="btn btn-primary mt-2"
+                    type="button"
+                  >
+                    প্রবেশ
+                  </button>
+                </div>
+                <div
+                  id="message-section"
+                  class="input-group mt-3"
+                  style="display: none"
+                >
+                  <input
+                    type="text"
+                    id="message-input"
+                    class="form-control"
+                    placeholder="মেসেজ লিখুন"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      id="send-button"
+                      class="btn btn-primary"
+                      type="button"
+                    >
+                      পাঠান
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="text-center py-3 mt-4">
+        <p>&copy; ২০২৫. সকল স্বত্ব সংরক্ষিত.</p>
+      </footer>
+    </div>
+
+    <script src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
+    <script src="https://unpkg.com/@videojs/http-streaming@3.15.0/dist/videojs-http-streaming.min.js"></script>
+    <script src="./scripts.js"></script>
+  </body>
+</html>
