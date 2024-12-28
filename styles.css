@@ -75,6 +75,14 @@ header {
     padding: 10px;
 }
 
+#chat-box .media img {
+    width: 50px;
+}
+
+#chat-box .media.flex-row-reverse .media-body {
+    text-align: right;
+}
+
 #login-section input,
 #message-section input {
     border-radius: 0;

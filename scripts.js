@@ -9,38 +9,49 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const storedUsername = localStorage.getItem('username');
 
+    const checkUser = username => {
+        fetch('./app/check_user.php', {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `username=${username}`
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    connectWebSocket(data.user);
+
+                    localStorage.setItem('username', JSON.stringify(data.user));
+                    loginSection.style.display = 'none';
+                    messageSection.style.display = 'flex';
+
+                    return true;
+                }
+
+                localStorage.removeItem('username');
+                alert('User not found');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
     const connectWebSocket = user => {
         const { name, pic } = user;
         const websocket = new WebSocket(`wss://${window.location.host}/stream/ws/`);
 
         const message_input = document.getElementById('message-input');
         const chat_box = document.getElementById('chat-box');
+        let keepAlive;
 
-        const sendMessage = () => {
-            if (message_input.value == "") {
-                alert("Enter Some message Please!");
-                return;
-            }
-
-            websocket.send(JSON.stringify({
-                type: 'usermsg',
-                message: message_input.value,
-                name: name,
-                pic: pic,
-            }));
-
-            message_input.value = '';
+        const sendMessage = (type, message) => {
+            websocket.send(JSON.stringify({ type: type, message: message, name: name, pic: pic }));
         }
 
         websocket.onopen = function (ev) {
-            const msg = {
-                type: 'system',
-                message: `${name} যুক্ত হয়েছেন।`,
-                name: name,
-                pic: pic,
-            };
-
-            websocket.send(JSON.stringify(msg));
+            sendMessage('system', `${name} যুক্ত হয়েছেন।`);
+            keepAlive = setInterval(() => { sendMessage('info', "I'm alive"); }, 10000);
         };
 
         websocket.onmessage = function (ev) {
@@ -53,10 +64,10 @@ document.addEventListener('DOMContentLoaded', function () {
             switch (res_type) {
                 case 'usermsg':
                     chat_box.innerHTML += `
-                        <div class="media mb-2 pb-1">
-                            <img src="${user_pic}" class="mr-3 rounded-circle">
+                        <div class="media mb-2 pb-1 ${name == user_name ? 'flex-row-reverse' : ''}">
+                            <img src="${user_pic}" class="mx-3 rounded-circle">
                             <div class="media-body">
-                                <h5 class="m-0">${user_name}</h5>
+                                <div><strong>${user_name}</strong></div>
                                 <div>${user_message}</div>
                             </div>
                         </div>
@@ -72,23 +83,37 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         websocket.onerror = function (ev) {
+            keepAlive && clearInterval(keepAlive);
             chat_box.innerHTML += `<div class="system_error">চ্যাট সার্ভার সচল নেই।</div>`;
         };
 
         websocket.onclose = function () {
+            keepAlive && clearInterval(keepAlive);
             chat_box.innerHTML += `<div class="system_error">সংযোগ বিচ্ছিন্ন</div>`;
         }
 
         document
             .getElementById('send-button')
             .addEventListener('click', function () {
-                sendMessage();
+                if (message_input.value == "") {
+                    alert("Enter Some message Please!");
+                    return;
+                }
+
+                sendMessage('usermsg', message_input.value);
+                message_input.value = '';
             })
 
         message_input
             .addEventListener('keydown', function (event) {
                 if (event.key === 'Enter') {
-                    sendMessage();
+                    if (message_input.value == "") {
+                        alert("Enter Some message Please!");
+                        return;
+                    }
+
+                    sendMessage('usermsg', message_input.value);
+                    message_input.value = '';
                 }
             });
     };
@@ -99,39 +124,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     if (storedUsername) {
-        loginSection.style.display = 'none';
-        messageSection.style.display = 'flex';
-
-        connectWebSocket(JSON.parse(storedUsername));
+        const { id } = JSON.parse(storedUsername);
+        checkUser(id);
     }
 
     loginButton.addEventListener('click', function () {
-        var username = usernameInput.value.trim();
-        if (username) {
-            fetch('./app/check_user.php', {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded"
-                },
-                body: `username=${username}`
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.exists) {
-                        connectWebSocket(data.user);
-
-                        localStorage.setItem('username', JSON.stringify(data.user));
-                        loginSection.style.display = 'none';
-                        messageSection.style.display = 'flex';
-
-                        return true;
-                    }
-
-                    alert('Username already exists or is currently connected.');
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
+        checkUser(usernameInput.value.trim());
     });
 });
