@@ -1,8 +1,8 @@
 <?php
 
-define('SUPERVISOR_RPC', "http://127.0.0.1:9091/RPC2");
-define('SUPERVISOR_USER', "user");
-define('SUPERVISOR_PASS', "pass");
+define('SUPERVISOR_RPC', "http://127.0.0.1:9001/RPC2");
+define('SUPERVISOR_USER', "");
+define('SUPERVISOR_PASS', "");
 
 function get_supervisor_rpc()
 {
