@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const usernameInput = document.getElementById('username');
     const loginButton = document.getElementById('login-button');
+    const logoutButton = document.getElementById('logout-button');
 
     const storedUsername = localStorage.getItem('username');
 
@@ -20,12 +21,11 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (data.exists) {
-                    connectWebSocket(data.user);
-
                     localStorage.setItem('username', JSON.stringify(data.user));
                     loginSection.style.display = 'none';
-                    messageSection.style.display = 'flex';
+                    messageSection.style.display = 'block';
 
+                    setTimeout(() => connectWebSocket(data.user), 1000);
                     return true;
                 }
 
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         websocket.onopen = function (ev) {
             sendMessage('system', `${name} যুক্ত হয়েছেন।`);
-            keepAlive = setInterval(() => { sendMessage('info', "I'm alive"); }, 10000);
+            keepAlive = setInterval(() => sendMessage('info', "I'm alive"), 10000);
         };
 
         websocket.onmessage = function (ev) {
@@ -130,5 +130,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     loginButton.addEventListener('click', function () {
         checkUser(usernameInput.value.trim());
+    });
+
+    logoutButton.addEventListener('click', function () {
+        localStorage.removeItem('username');
+        location.reload();
     });
 });
