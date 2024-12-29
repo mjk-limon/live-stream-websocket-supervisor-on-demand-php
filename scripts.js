@@ -119,8 +119,8 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     player.ready(function () {
-        // player.muted(true);
-        // player.play();
+        player.muted(true);
+        player.play();
     });
 
     if (storedUsername) {
