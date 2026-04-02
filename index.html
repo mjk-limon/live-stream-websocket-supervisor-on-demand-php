@@ -16,7 +16,7 @@
     <div class="content-wrapper">
       <header class="text-center py-3">
         <img
-          src="https://assets.prothomalo.com/prothomalo/assets/palo-bangla-bb996cdb70d2e0ccec8c.svg"
+          src="./assets/logo.png"
           alt="Logo"
           class="logo"
         />
@@ -24,7 +24,7 @@
 
       <div class="scrolling-text">
         <marquee behavior="scroll" direction="left" scrollamount="10">
-          "প্রথম আলো টিভি" পরীক্ষামূলকভাবে সম্প্রচার চালু করেছে। প্রাথমিক
+          "নোয়াখালী স্পোর্টস" পরীক্ষামূলকভাবে সম্প্রচার চালু করেছে। প্রাথমিক
           সম্প্রচারে কোন অনুদান না থাকায়, বর্তমানে স্ট্রিম সার্ভারটি
           লোকাল-সার্ভার থেকে Argo-Tunnel এর মাধ্যমে সার্ভ হচ্ছে। যার কারণে
           শুধুমাত্র সার্ভার ল্যাপটপ-টি চালু থাকলে আপনারা সম্প্রচারটি দেখতে
@@ -37,21 +37,21 @@
           <div class="col-md-7">
             <video-js id="vid1" class="video-js vjs-default-skin" controls>
               <source
-                src="http://localhost/stream/dash/test.mpd"
+                src="http://50.50.50.50:8088/209/index.m3u8?token=59f2b15c18da62f7ccce72dddfef6bd167ca5a72-c9e846183d6f788e9f85d117bd514848-1760117638-1760114038"
                 type="application/dash+xml"
               />
               <source
-                src="https://go.muscatzonecleaningservices.com/stream/dash/test.mpd"
+                src="https://go.jahidlimon.com/stream/dash/test.mpd"
                 type="application/dash+xml"
               />
 
               <!-- Fallback HLS -->
               <source
-                src="http://localhost/stream/hls/test.m3u8"
+                src="http://50.50.50.50:8088/209/index.m3u8?token=59f2b15c18da62f7ccce72dddfef6bd167ca5a72-c9e846183d6f788e9f85d117bd514848-1760117638-1760114038"
                 type="application/x-mpegURL"
               />
               <source
-                src="https://go.muscatzonecleaningservices.com/stream/hls/test.m3u8"
+                src="https://go.jahidlimon.com/stream/hls/test.m3u8"
                 type="application/x-mpegURL"
               />
             </video-js>
