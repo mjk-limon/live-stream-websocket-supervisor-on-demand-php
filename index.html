@@ -23,38 +23,13 @@
       </header>
 
       <div class="scrolling-text">
-        <marquee behavior="scroll" direction="left" scrollamount="10">
-          "নোয়াখালী স্পোর্টস" পরীক্ষামূলকভাবে সম্প্রচার চালু করেছে। প্রাথমিক
-          সম্প্রচারে কোন অনুদান না থাকায়, বর্তমানে স্ট্রিম সার্ভারটি
-          লোকাল-সার্ভার থেকে Argo-Tunnel এর মাধ্যমে সার্ভ হচ্ছে। যার কারণে
-          শুধুমাত্র সার্ভার ল্যাপটপ-টি চালু থাকলে আপনারা সম্প্রচারটি দেখতে
-          পারবেন। অনুষ্ঠান-সূচি আপনাদের অনুরোধের ভিত্তিতে সম্প্রচারিত হবে।
-        </marquee>
+        <marquee id="scrolling-marquee" behavior="scroll" direction="left" scrollamount="10"></marquee>
       </div>
 
       <div class="container-fluid mt-4">
         <div class="row justify-content-between">
           <div class="col-md-7">
-            <video-js id="vid1" class="video-js vjs-default-skin" controls>
-              <source
-                src="http://50.50.50.50:8088/209/index.m3u8?token=59f2b15c18da62f7ccce72dddfef6bd167ca5a72-c9e846183d6f788e9f85d117bd514848-1760117638-1760114038"
-                type="application/dash+xml"
-              />
-              <source
-                src="https://go.jahidlimon.com/stream/dash/test.mpd"
-                type="application/dash+xml"
-              />
-
-              <!-- Fallback HLS -->
-              <source
-                src="http://50.50.50.50:8088/209/index.m3u8?token=59f2b15c18da62f7ccce72dddfef6bd167ca5a72-c9e846183d6f788e9f85d117bd514848-1760117638-1760114038"
-                type="application/x-mpegURL"
-              />
-              <source
-                src="https://go.jahidlimon.com/stream/hls/test.m3u8"
-                type="application/x-mpegURL"
-              />
-            </video-js>
+            <video-js id="vid1" class="video-js vjs-default-skin" controls></video-js>
           </div>
           <div class="col-md-4">
             <div class="card">
@@ -63,19 +38,12 @@
                 <div id="chat-box" class="chat-box"></div>
 
                 <div id="login-section" class="mt-3">
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      id="username"
-                      class="form-control"
-                      placeholder="আপনার ইমেইল দিন"
-                    />
-                    <div class="input-group-append">
-                      <button class="btn btn-secondary" type="button">
-                        @prothomalo.com
-                      </button>
-                    </div>
-                  </div>
+                  <input
+                    type="email"
+                    id="username"
+                    class="form-control"
+                    placeholder="আপনার ইমেইল দিন"
+                  />
                   <button
                     id="login-button"
                     class="btn btn-primary mt-2"

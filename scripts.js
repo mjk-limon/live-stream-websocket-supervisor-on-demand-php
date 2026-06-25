@@ -10,13 +10,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const storedUsername = localStorage.getItem('username');
 
-    const checkUser = username => {
+    fetch('./app/api/config.php')
+        .then(response => response.json())
+        .then(config => {
+            const marquee = document.getElementById('scrolling-marquee');
+            if (marquee && config.scrolling_text) {
+                marquee.textContent = config.scrolling_text;
+            }
+
+            if (config.dash_url) {
+                player.src({ src: config.dash_url, type: 'application/dash+xml' });
+            } else if (config.hls_url) {
+                player.src({ src: config.hls_url, type: 'application/x-mpegURL' });
+            }
+        })
+        .catch(error => console.error('Config load error:', error));
+
+    const checkUser = email => {
         fetch('./app/check_user.php', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: `username=${username}`
+            body: `email=${encodeURIComponent(email)}`
         })
             .then(response => response.json())
             .then(data => {
@@ -124,12 +140,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     if (storedUsername) {
-        const { id } = JSON.parse(storedUsername);
-        checkUser(id);
+        const { id, email } = JSON.parse(storedUsername);
+        checkUser(email || id);
     }
 
     loginButton.addEventListener('click', function () {
         checkUser(usernameInput.value.trim());
+    });
+
+    usernameInput.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') {
+            checkUser(usernameInput.value.trim());
+        }
     });
 
     logoutButton.addEventListener('click', function () {
